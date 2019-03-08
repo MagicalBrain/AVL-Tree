@@ -56,25 +56,39 @@ bool find(KeyType x, AvlTree T)
 ////左高，右旋
 void LL(AvlNode *t)
 {
-
+	AvlNode* t1 = t->left;
+	t->left = t1->right;
+	t1->right = t;
+	t->height = (t->left->height > t->right->height) ? t->left->height + 1 : t->right->height + 1;
+	t1->height = (t->left->height > t->height) ? t->left->height + 1 : t->height + 1;
+	t = t1;
 }
 
-////左高右低，先右旋再左旋
-void LR(AvlNode *t)
-{
 
-}
 
 
 void RR(AvlNode *t)
 {
-
+	AvlNode* t1 = t->right;
+	t->right = t1->left;
+	t1->left = t;
+	t->height = (t->left->height > t->right->height) ? t->left->height + 1 : t->right->height + 1;
+	t1->height = (t->right->height > t->height) ? t->right->height + 1 : t->height + 1;
+	t = t1;
 }
 
 
+////左高右低，先右旋再左旋
+void LR(AvlNode *t)
+{
+	RR(t->left);
+	LL(t);
+}
+
 void RL(AvlNode *t)
 {
-
+	LL(t->right);
+	RR(t);
 }
 
 
@@ -109,4 +123,11 @@ void insert0(KeyType x,AvlNode* t)
 void insert(KeyType x,AvlTree &T)
 {
 	insert0(x, T.root);
+}
+
+
+//remove函数的实现
+void remove()
+{
+
 }
