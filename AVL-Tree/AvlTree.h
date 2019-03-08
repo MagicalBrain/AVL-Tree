@@ -127,7 +127,49 @@ void insert(KeyType x,AvlTree &T)
 
 
 //remove函数的实现
-void remove()
+Status remove(KeyType x,AvlNode *&t)
 {
+	Status stop = FALSE;
+	int subTree;
 
+	if (t == NULL)
+		return TRUE;
+	if (x < t->data)
+	{
+		stop = remove(x, t->left);
+		subTree = 1;
+	}
+	else if (x > t->data)
+	{
+		stop = remove(x, t->right);
+		subTree = 2;
+	}
+	else if (t->left != NULL &&t->right != NULL)
+	{
+		AvlNode* tmp = t->right;
+		while (tmp->left != NULL)
+			tmp = tmp->left;
+		t->data = tmp->data;
+		stop = remove(t->data, t->right);
+		subTree = 2;
+	}
+	else
+	{
+		AvlNode*oddNode = t;
+		t = (t->left != NULL) ? t->left : t->right;
+		return FALSE;
+	}
+
+	if (stop)
+		return TRUE;
+	int bf;
+	switch (subTree)
+	{
+	case 1:
+
+		break;
+	default:
+
+		break;
+	}
 }
