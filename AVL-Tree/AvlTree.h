@@ -50,3 +50,27 @@ bool find(KeyType x, AvlTree T)
 	else
 		return TRUE;
 }
+
+
+//insert0
+void insert0(KeyType x,AvlNode* t)
+{
+	if (t == NULL)
+		t = (AvlNode*)malloc(sizeof(AvlNode));
+	else if (x < t->data)
+	{
+		insert0(x, t->left);
+		if (t->left->height - t->right->height == 2)
+			if (x < t->left->data)
+				LL(t);
+			else
+				LR(t);
+	}
+}
+
+
+//insert函数的实现
+void insert(KeyType x,AvlTree &T)
+{
+	insert0(x, T.root);
+}
