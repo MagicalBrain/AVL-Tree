@@ -52,6 +52,32 @@ bool find(KeyType x, AvlTree T)
 }
 
 
+//4个调整函数的实现
+////左高，右旋
+void LL(AvlNode *t)
+{
+
+}
+
+////左高右低，先右旋再左旋
+void LR(AvlNode *t)
+{
+
+}
+
+
+void RR(AvlNode *t)
+{
+
+}
+
+
+void RL(AvlNode *t)
+{
+
+}
+
+
 //insert0
 void insert0(KeyType x,AvlNode* t)
 {
@@ -66,6 +92,16 @@ void insert0(KeyType x,AvlNode* t)
 			else
 				LR(t);
 	}
+	else if (x > t->data)
+	{
+		insert0(x, t->right);
+		if (t->right->height - t->left->height == 2)
+			if (x > t->right->data)
+				RR(t);
+			else
+				RL(t);
+	}
+	t->height = (t->left->height > t->right->height) ? t->left->height + 1 : t->right->height + 1;
 }
 
 
