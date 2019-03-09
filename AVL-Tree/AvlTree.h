@@ -172,10 +172,48 @@ Status remove(KeyType x,AvlNode *&t)
 		if (bf == 1)
 			return FALSE;
 		if (bf == -1)
-			return 
+		{
+			int bfr = t->right->left->height - t->right->right->height;
+			switch (bfr)
+			{
+			case 0:
+				RR(t);
+				return TRUE;
+			case -1:
+				RR(t);
+				return FALSE;
+			default:
+				RL(t);
+				return FALSE;
+				//break;
+			}
+		}
+		break;
+	case 2:
+		bf = t->left->height - t->right->height - 1;
+		if (bf == 0)
+			return TRUE;
+		if (bf == -1)
+			return FALSE;
+		if (bf == 1)
+		{
+			int bfr = t->right->left->height - t->right->right->height;
+			switch (bfr)
+			{
+			case 0:
+				LL(t);
+				return TRUE;
+			case -1:
+				LL(t);
+				return FALSE;
+			default:
+				LR(t);
+				return FALSE;
+				//break;
+			}
+		}
 		break;
 	default:
-
 		break;
 	}
 }
