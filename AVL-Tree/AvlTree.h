@@ -166,7 +166,13 @@ Status remove(KeyType x,AvlNode *&t)
 	switch (subTree)
 	{
 	case 1:
-
+		bf = t->left->height - t->right->height + 1;
+		if (bf == 0)
+			return TRUE;
+		if (bf == 1)
+			return FALSE;
+		if (bf == -1)
+			return 
 		break;
 	default:
 
