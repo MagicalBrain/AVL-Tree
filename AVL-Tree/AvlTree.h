@@ -52,40 +52,46 @@ bool find(KeyType x, AvlTree T)
 }
 
 
+int height(AvlNode* t)
+{
+	return t == NULL ? -1 : t->height;
+}
+
+
 //4个调整函数的实现
 ////左高，右旋
-void LL(AvlNode *t)
+void LL(AvlNode * &t)
 {
 	AvlNode* t1 = t->left;
 	t->left = t1->right;
 	t1->right = t;
-	t->height = (t->left->height > t->right->height) ? t->left->height + 1 : t->right->height + 1;
-	t1->height = (t->left->height > t->height) ? t->left->height + 1 : t->height + 1;
+	t->height = (height(t->left) > height(t->right)) ? height(t->left) + 1 : height(t->right) + 1;
+	t1->height = (height(t->left) > t->height) ? height(t->left) + 1 : t->height + 1;
 	t = t1;
 }
 
 
 
 
-void RR(AvlNode *t)
+void RR(AvlNode * &t)
 {
 	AvlNode* t1 = t->right;
 	t->right = t1->left;
 	t1->left = t;
-	t->height = (t->left->height > t->right->height) ? t->left->height + 1 : t->right->height + 1;
-	t1->height = (t->right->height > t->height) ? t->right->height + 1 : t->height + 1;
+	t->height = (height(t->left) > height(t->right)) ? height(t->left) + 1 : height(t->right) + 1;
+	t1->height = (height(t->right) > t->height) ? height(t->right) + 1 : t->height + 1;
 	t = t1;
 }
 
 
 ////左高右低，先右旋再左旋
-void LR(AvlNode *t)
+void LR(AvlNode * &t)
 {
 	RR(t->left);
 	LL(t);
 }
 
-void RL(AvlNode *t)
+void RL(AvlNode * &t)
 {
 	LL(t->right);
 	RR(t);
@@ -93,14 +99,20 @@ void RL(AvlNode *t)
 
 
 //insert0
-void insert0(KeyType x,AvlNode* t)
+void insert0(KeyType &x,AvlNode* &t)
 {
 	if (t == NULL)
+	{
 		t = (AvlNode*)malloc(sizeof(AvlNode));
+		t->left = NULL;
+		t->right = NULL;
+		t->height = 0;
+		t->data = x;
+	}
 	else if (x < t->data)
 	{
 		insert0(x, t->left);
-		if (t->left->height - t->right->height == 2)
+		if (height(t->left) - height(t->right) == 2)
 			if (x < t->left->data)
 				LL(t);
 			else
@@ -109,13 +121,13 @@ void insert0(KeyType x,AvlNode* t)
 	else if (x > t->data)
 	{
 		insert0(x, t->right);
-		if (t->right->height - t->left->height == 2)
+		if (height(t->right) - height(t->left) == 2)
 			if (x > t->right->data)
 				RR(t);
 			else
 				RL(t);
 	}
-	t->height = (t->left->height > t->right->height) ? t->left->height + 1 : t->right->height + 1;
+	t->height = (height(t->left) > height(t->right)) ? height(t->left) + 1 : height(t->right) + 1;
 }
 
 
@@ -166,7 +178,7 @@ Status remove(KeyType x,AvlNode *&t)
 	switch (subTree)
 	{
 	case 1:
-		bf = t->left->height - t->right->height + 1;
+		bf = height(t->left) - height(t->right) + 1;
 		if (bf == 0)
 			return TRUE;
 		if (bf == 1)
@@ -190,7 +202,7 @@ Status remove(KeyType x,AvlNode *&t)
 		}
 		break;
 	case 2:
-		bf = t->left->height - t->right->height - 1;
+		bf = height(t->left) - height(t->right) - 1;
 		if (bf == 0)
 			return TRUE;
 		if (bf == -1)
